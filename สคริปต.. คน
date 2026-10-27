@@ -1,0 +1,42 @@
+import pyautogui
+import keyboard
+import time
+
+# --- ตั้งค่าการทำงาน ---
+# ปุ่มเปิด/ปิดระบบ (ปรับเปลี่ยนได้ตามใจชอบ)
+START_KEY = 'f8'
+STOP_KEY = 'f9'
+# ความเร็วในการตอก/คลิก (หน่วยเป็นวินาที : ยิ่งน้อยยิ่งรัว เช่น 0.01 คือรัวมาก)
+CLICK_SPEED = 0.05 
+
+print("=========================================")
+print(f" กด [{START_KEY.upper()}] เพื่อ -> เริ่มตอกอัตโนมัติ")
+print(f" กด [{STOP_KEY.upper()}] เพื่อ -> หยุดตอกชั่วคราว")
+print(" กด [Ctrl + C] ในหน้าต่างนี้เพื่อ -> ปิดโปรแกรม")
+print("=========================================")
+
+is_clicking = False
+
+while True:
+    try:
+        # ตรวจสอบการกดปุ่มทางคีย์บอร์ด
+        if keyboard.is_pressed(START_KEY):
+            if not is_clicking:
+                is_clicking = True
+                print("▶️ ระบบเริ่มทำงาน: กำลังตอกรัวๆ...")
+                time.sleep(0.3) # ป้องกันการตรวจจับปุ่มซ้ำ
+                
+        elif keyboard.is_pressed(STOP_KEY):
+            if is_clicking:
+                is_clicking = False
+                print("⏸️ ระบบหยุดทำงานชั่วคราว")
+                time.sleep(0.3)
+
+        # หากสถานะเป็น True ให้ทำการคลิกเมาส์ซ้าย 1 ครั้ง
+        if is_clicking:
+            pyautogui.click()
+            time.sleep(CLICK_SPEED)
+            
+    except KeyboardInterrupt:
+        print("\n❌ ปิดโปรแกรมเรียบร้อยแล้ว")
+        break
